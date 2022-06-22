@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Text, TextInput} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { Feather } from '@expo/vector-icons';
+import { View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Text, TextInput, ImageBackground} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import UploadImage from '../components/UploadImage';
+import { registerUser } from '../actions/userAction';
 
 export default function Register() {
-  const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
   const [twitter, setTwitter] = useState("");
@@ -18,6 +19,10 @@ export default function Register() {
 
   const handleEmailChange = (text) => {
     setEmail(text);
+  };
+
+  const handlePasswordChange = (text) => {
+    setPassword(text);
   };
 
   const handlePhoneChange = (text) => {
@@ -37,41 +42,18 @@ export default function Register() {
   };
 
   const handleSubmit = () => {
-    console.log(name, email, phone, role, twitter, linkedIn);
-  };
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
+    registerUser(email, password);
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
-      <View style={styles.upload}>
-        {image === null ? (
-          <TouchableOpacity style={{alignItems: "center"}} onPress={pickImage}>
-            <Feather name="user" size={60} color="slateblue" />
-            <Text style={{fontSize: 20, color: "slateblue"}}>ADD PROFILE PHOTO</Text>
-          </TouchableOpacity>
-        ) : (
-          <Image source={{ uri: image }} style={{ width: "100%", height: 180, }} />
-        )}
-      </View>
+    <KeyboardAwareScrollView style={styles.container}>
+      <ImageBackground style={styles.upload} resizeMode="cover"  source={require('../../assets/4.register.jpg')}>
+        <UploadImage />
+      </ImageBackground>
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.form}>
-          <View style={{flexDirection: "row", justifyContent: "space-between", marginVertical: 15}}>
+          <View style={{flexDirection: "row", justifyContent: "space-between", marginVertical: 18}}>
             <View style={{flex: 4, padding: 5}}>
               <Text style={{fontSize: 22, color: "rgba(17,76,94,255)"}}>Full Name</Text>
             </View>
@@ -88,6 +70,17 @@ export default function Register() {
             </View>
             <View style={{flex: 6, backgroundColor: "whitesmoke", padding: 5}}>
               <TextInput style={{fontSize: 20}} placeholder='enter a valid email' value={email} onChangeText={handleEmailChange} keyboardType="email-address"/>
+            </View>
+          </View>
+
+          <View style={{borderBottomWidth: 1, borderBottomColor: "lightgrey"}}></View>
+
+          <View style={{flexDirection: "row", justifyContent: "space-between", marginVertical: 10}}>
+            <View style={{flex: 4, padding: 5}}>
+              <Text style={{fontSize: 22, color: "rgba(17,76,94,255)"}}>Password</Text>
+            </View>
+            <View style={{flex: 6, backgroundColor: "whitesmoke", padding: 5}}>
+              <TextInput style={{fontSize: 20}} placeholder='enter password' value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
             </View>
           </View>
 
@@ -142,7 +135,7 @@ export default function Register() {
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -154,9 +147,8 @@ const styles = StyleSheet.create({
   
   upload: {
     flex: 3,
-    overflow: "hidden",
     justifyContent: "center",
-    alignItems: "center"
+    padding: 5
   },
 
   form: {

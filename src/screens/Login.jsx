@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import { View, StyleSheet, Image, Text, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const handleEmailChange = (text) => {
     setEmail(text);
@@ -43,7 +45,7 @@ export default function Login() {
             </View>
           </View>
 
-          <TouchableOpacity onPress={handleSubmit} style={{width: "100%", height: 50, justifyContent: "center", alignItems: "center", backgroundColor: "#F32424", borderRadius: 5, marginVertical: 25}}>
+          <TouchableOpacity  style={{width: "100%", height: 50, justifyContent: "center", alignItems: "center", backgroundColor: "#F32424", borderRadius: 5, marginVertical: 25}}>
             <Text style={{fontSize: 30, color: "white", letterSpacing: 2}}>SIGN IN</Text>
           </TouchableOpacity>
 
