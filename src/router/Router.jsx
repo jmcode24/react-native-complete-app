@@ -42,23 +42,26 @@ export default function Router() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={user && authenticated  ? "Get Started" : "Home"}>
+      <Stack.Navigator initialRouteName={user && authenticated  ? "Home" : "Get Started"}>
         {user && authenticated ? (
           <>
             <Stack.Screen name="Main" component={Main}  options={{headerTitle: () => (<View style={{flexDirection: "row"}}>
-            <Image source={require("../../assets/1.gs.png")} style={styles.logo}/>
-            <Text style={{alignSelf: "flex-end", fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>SAFE-HANDS</Text>
-            </View>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) => <MainBack {...props} /> }} />
-            <Stack.Screen name="ScanQR" component={ScanQR} options={{headerShown: false}} />
-            <Stack.Screen name="UserProfile" component={UserProfile} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>My Profile</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Left {...props}/>}} />
-            <Stack.Screen name="MemberProfile" component={MemberProfile} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>Member Profile</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Back {...props}/>}} />
-          </>) : (
-            <>
-              <Stack.Screen name="Get Started" component={GetStarted} options={{headerShown: false}}/>
-              <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
-              <Stack.Screen name="Login" component={Login} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>Sign In</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Left {...props}/>}} />
-              <Stack.Screen name="Register" component={Register} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>Register</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Left {...props}/> }}/>
-            </>)}
+              <Image source={require("../../assets/1.gs.png")} style={styles.logo}/>
+              <Text style={{alignSelf: "flex-end", fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>SAFE-HANDS</Text>
+              </View>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) => <MainBack {...props} /> }} />
+              <Stack.Screen name="ScanQR" component={ScanQR} options={{headerShown: false}} />
+              <Stack.Screen name="UserProfile" component={UserProfile} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>My Profile</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Left {...props}/>}} />
+              <Stack.Screen name="MemberProfile" component={MemberProfile} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>Member Profile</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Back {...props}/>}} 
+            />
+          </>) : 
+          (<>
+            <Stack.Screen name="Get Started" component={GetStarted} options={{headerShown: false}}/>
+            <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
+            <Stack.Screen name="Login" component={Login} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>Sign In</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Left {...props}/>}} />
+            <Stack.Screen name="Register" component={Register} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>Register</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Left {...props}/> }}
+            />
+          </>)
+        }
       </Stack.Navigator>
     </NavigationContainer>
   );
