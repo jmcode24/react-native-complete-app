@@ -32,7 +32,6 @@ export default function Router() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         dispatch(setUser(user));
-        dispatch(setAuthenticated(true));
       } else  {
         dispatch(setUser(null));
         dispatch(setAuthenticated(false))
@@ -48,7 +47,7 @@ export default function Router() {
             <Stack.Screen name="Main" component={Main}  options={{headerTitle: () => (<View style={{flexDirection: "row"}}>
               <Image source={require("../../assets/1.gs.png")} style={styles.logo}/>
               <Text style={{alignSelf: "flex-end", fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>SAFE-HANDS</Text>
-              </View>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) => <MainBack {...props} /> }} />
+              </View>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) => <MainBack {...props} />, headerRight: (props) => <Right {...props} /> }} />
               <Stack.Screen name="ScanQR" component={ScanQR} options={{headerShown: false}} />
               <Stack.Screen name="UserProfile" component={UserProfile} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>My Profile</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Left {...props}/>}} />
               <Stack.Screen name="MemberProfile" component={MemberProfile} options={{headerTitle: () => (<Text style={{fontSize: 20, fontWeight: "bold", letterSpacing: 2, color: "white"}}>Member Profile</Text>), headerStyle: {backgroundColor: "#F32424"}, headerLeft: (props) =>  <Back {...props}/>}} 

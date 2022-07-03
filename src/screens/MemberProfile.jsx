@@ -3,13 +3,13 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Linking } from 'react-
 import { Feather ,MaterialIcons, Entypo } from '@expo/vector-icons';
 
 export default function MemberProfile({ route }) {
-  const { name, email, role, phone, location, profileImg } = route.params.details;
+  const { name, email, role, phone, location, image } = route.params.data;
 
   return (
     <View style={styles.container}>
       <View style={{flexDirection: "row", marginVertical: 30}}>
         <View styles={{flex: 2}}>
-         <Image source={profileImg} style={styles.imgDetails} />
+         <Image source={{uri: image}} style={styles.imgDetails} />
         </View>
         <View style={{flex: 8, justifyContent: "center", marginLeft: 22}}>
           <Text style={{fontSize: 22, fontWeight: "bold", letterSpacing: 1, color: "slateblue"}}>{name}</Text>
@@ -18,10 +18,10 @@ export default function MemberProfile({ route }) {
       </View>
 
       <View style={{flexDirection: "row"}}>
-        <TouchableOpacity onPress={()=> Linking.openURL("https://twitter.com/z4zeus")}>
+        <TouchableOpacity>
           <Entypo name="twitter-with-circle" size={40} color="darkblue" />
         </TouchableOpacity>
-        <TouchableOpacity onPress= {()=> Linking.openURL("http://linkedin.com/in/jamil-mohammed-b76ab1235")} style={{marginLeft: 22}}>
+        <TouchableOpacity style={{marginLeft: 22}}>
           <Entypo name="linkedin-with-circle" size={40} color="darkblue" />
         </TouchableOpacity>
       </View>
