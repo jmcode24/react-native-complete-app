@@ -11,6 +11,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [emptyfields, setEmptyFields] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [wrongPassword, setWrongPassword] = useState(false);
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -40,11 +42,25 @@ export default function Login() {
       } else {
         startLoading();
 
-        login(email, password);
+        await login(email, password);
         dispatch(setAuthenticated(true));
       };
     } catch(error) {
-      console.log(error.code);
+      if (error.code === 'auth/user-not-found') {
+        setLoading(false);
+        setInvalidEmail(true);
+        setTimeout(() => {
+          setInvalidEmail(false);
+        }, 2000);
+      } else if (error.code === 'auth/wrong-password') {
+        setLoading(false);
+        setWrongPassword(true);
+        setTimeout(() => {
+          setWrongPassword(false);
+        }, 2000);
+      }
+
+      console.log(error)
     } 
   };
 
@@ -58,12 +74,14 @@ export default function Login() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.form}>
           {emptyfields && <Text style={{alignSelf: "center", color: "red", fontSize: 20, fontWeight: "bold", fontStyle: "italic", marginTop: 5}}>Enter email and password</Text> }
+          {invalidEmail && <Text style={{alignSelf: "center", color: "red", fontSize: 20, fontWeight: "bold", fontStyle: "italic", marginTop: 5}}>Invalid email address</Text> }
+          {wrongPassword && <Text style={{alignSelf: "center", color: "red", fontSize: 20, fontWeight: "bold", fontStyle: "italic", marginTop: 5}}>Wrong password</Text> }
           <View style={{flexDirection: "row", justifyContent: "space-between", marginVertical: 20}}>
             <View style={{flex: 4}}>
               <Text style={{fontSize: 25, color: "rgba(17,76,94,255)", padding: 5}}>Email</Text>
             </View>
             <View style={{flex: 6, backgroundColor: "whitesmoke", padding: 5}}>
-              <TextInput style={{fontSize: 20, padding: 5}} autoCapitalize='none' placeholder='enter email' value={email} onChangeText={handleEmailChange} keyboardType="email-address"/>
+              <TextInput style={{fontSize: 20, padding: 5}} autoCapitalize='none' placeholder='enter your email' value={email} onChangeText={handleEmailChange} keyboardType="email-address"/>
             </View>
           </View>
 
@@ -72,7 +90,7 @@ export default function Login() {
               <Text style={{fontSize: 25, color: "rgba(17,76,94,255)", padding: 5}}>Password</Text>
             </View>
             <View style={{flex: 6, backgroundColor: "whitesmoke", padding: 5}}>
-              <TextInput style={{fontSize: 20, padding: 5}} placeholder='enter password' value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
+              <TextInput style={{fontSize: 20, padding: 5}} placeholder='enter your password' value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
             </View>
           </View>
 

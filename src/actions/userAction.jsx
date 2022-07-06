@@ -22,8 +22,9 @@ export const registerUser = async (email, password, userInfo, profileImage) => {
     // await setDoc(doc(firestore, "users", uid), userInfo);
     await userDetails(userInfo, uid);
     await uploadProfileImage(profileImage, uid);
-  } catch (error) {
-    console.log(error);
+  } 
+  catch (error) {
+    throw error
   }
 };
 
@@ -37,7 +38,7 @@ export const login = async (email, password) => {
     const user = userCredentials.user;
   }
   catch(error) {
-    console.log(error);
+    throw error
   };
 };
 

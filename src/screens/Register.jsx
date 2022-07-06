@@ -18,6 +18,8 @@ export default function Register() {
   const [linkedIn, setLinkedIn] = useState("");
   const [loading, setLoading] = useState(false);
   const [emptyfields, setEmptyFields] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -83,6 +85,20 @@ export default function Register() {
       dispatch(setAuthenticated(true));
       }
     } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        setLoading(false);
+        setEmailError(true);
+        setTimeout(() => {
+          setEmailError(false);
+        }, 2000);
+      } else if (error.code === 'auth/weak-password') {
+        setLoading(false);
+        setPasswordError(true);
+        setTimeout(() => {
+          setPasswordError(false);
+        }, 2000);
+      }
+
       console.log(error)
     }
   };
@@ -96,6 +112,8 @@ export default function Register() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.form}>
           {emptyfields && <Text style={{alignSelf: "center", color: "red", fontSize: 20, fontWeight: "bold", fontStyle: "italic", marginTop: 5}}>Leave no input field empty</Text> }
+          {emailError && <Text style={{alignSelf: "center", color: "red", fontSize: 20, fontWeight: "bold", fontStyle: "italic", marginTop: 5}}>Email already in use</Text> }
+          {passwordError && <Text style={{alignSelf: "center", color: "red", fontSize: 20, fontWeight: "bold", fontStyle: "italic", marginTop: 5}}>Password should be at least 6 characters</Text> }
           <View style={{flexDirection: "row", justifyContent: "space-between", marginVertical: 18}}>
             <View style={{flex: 4, padding: 5}}>
               <Text style={{fontSize: 22, color: "rgba(17,76,94,255)"}}>Full Name</Text>
@@ -123,7 +141,7 @@ export default function Register() {
               <Text style={{fontSize: 22, color: "rgba(17,76,94,255)"}}>Password</Text>
             </View>
             <View style={{flex: 6, backgroundColor: "whitesmoke", padding: 5}}>
-              <TextInput style={{fontSize: 20}} autoCapitalize='none' placeholder='enter password' value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
+              <TextInput style={{fontSize: 20}} autoCapitalize='none' placeholder='atleast 6 characters' value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
             </View>
           </View>
 
@@ -167,7 +185,7 @@ export default function Register() {
               <Text style={{fontSize: 22, color: "rgba(17,76,94,255)"}}>Twitter</Text>
             </View>
             <View style={{flex: 6, backgroundColor: "whitesmoke", padding: 5}}>
-              <TextInput style={{fontSize: 20}} placeholder='twitter handle' value={twitter} onChangeText={handleTwitterChange} keyboardType="default"/>
+              <TextInput style={{fontSize: 20}} placeholder='@twitter handle' value={twitter} onChangeText={handleTwitterChange} keyboardType="default"/>
             </View>
           </View>
 
@@ -178,7 +196,7 @@ export default function Register() {
               <Text style={{fontSize: 22, color: "rgba(17,76,94,255)"}}>LinkedIn</Text>
             </View>
             <View style={{flex: 6, backgroundColor: "whitesmoke", padding: 5}}>
-              <TextInput style={{fontSize: 20}} placeholder='linkedIn page' value={linkedIn} onChangeText={handleLinkedInChange} keyboardType="default"/>
+              <TextInput style={{fontSize: 20}} placeholder='/linkedIn page' value={linkedIn} onChangeText={handleLinkedInChange} keyboardType="default"/>
             </View>
           </View>
 
